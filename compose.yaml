@@ -1,0 +1,32 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: authex_container
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USERNAME: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - authex_data:/var/lib/postgresql/data
+    networks:
+      - authex_network
+
+  redis:
+    image: redis:7.0-alpine
+    container_name: redis_container_authex
+    ports:
+      - "6379:6379"
+    volumes:
+      - authex_redis_data:/data
+    networks:
+      - authex_network
+
+volumes:
+  authex_data:
+  authex_redis_data:
+
+networks:
+  authex_network:
+    driver: bridge
